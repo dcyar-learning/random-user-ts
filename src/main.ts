@@ -1,5 +1,6 @@
 import './style.css';
-import getRandomUser, { User, printUser } from './random';
+import getRandomUser from './random';
+import { User } from './interfaces';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -11,8 +12,18 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   </div>
 `;
 
-const loadAndRenderUser = async () => {
-    const user: User = await getRandomUser();
+export const printUser = (user: User): void => {
+    const dataElement: HTMLElement | null = document.getElementById('data');
+
+    dataElement!.innerHTML = `
+    <img src='${user.picture.large}' alt='${user.name.first} ${user.name.last}' />
+    <h2>${user.name.title} ${user.name.first} ${user.name.last}</h2>
+    <small>${user.email}</small>
+  `;
+};
+
+const loadAndRenderUser = async (): Promise<void> => {
+    const user = await getRandomUser();
 
     printUser(user);
 };
